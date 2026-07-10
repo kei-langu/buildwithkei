@@ -198,7 +198,7 @@
       <a href="#ebook">The ebook</a>
       <a href="#proof">Proof</a>
       <a href="#work">Work with me</a>
-      <a href="#template" class="btn btn-primary">Free template</a>
+      <a href="#template" class="btn btn-primary">Free diagnostic</a>
     </nav>
   </div>
 </header>
@@ -210,11 +210,11 @@
     <div class="wrap hero-grid">
       <div>
         <span class="eyebrow"><span class="dot"></span>Systems Architect</span>
-        <h1 class="title">You've got the pieces. <em>I build the system.</em></h1>
-        <p class="lede">I help founders and small businesses turn a tangle of tools and half-built ideas into a system you can actually run. And I find the pieces you didn't know were missing.</p>
-        <p class="hook">"I see the system hiding in your mess."</p>
+        <h1 class="title">I see the <em>system hiding</em> in your mess.</h1>
+        <p class="lede">I help builders find the missing system between where they are and where they're trying to go. You bring the tangle of tools and half-built ideas. I show you what's actually missing, and what to do next.</p>
+        <p class="hook">You've got the pieces. I build the system.</p>
         <div class="cta-row">
-          <a href="#template" class="btn btn-primary">Get the free template <span class="arr">→</span></a>
+          <a href="#template" class="btn btn-primary">Find your missing system <span class="arr">→</span></a>
           <a href="#ebook" class="btn btn-ghost">Start with the $19 ebook</a>
         </div>
       </div>
@@ -241,22 +241,19 @@
         <div class="capture-grid">
           <div>
             <div class="tagm">Free · start here</div>
-            <h2>The First 5 Systems Map</h2>
-            <p>The one-page map of the five systems every product or small business needs to actually run, and how to tell which one you're missing. Costs you an email, nothing else.</p>
+            <h2>Find Your Missing System</h2>
+            <p>A two-minute diagnostic that pinpoints which of the five systems your product or business is missing, and what to do about it. See the gap before you build another thing.</p>
             <ul class="preview-list">
-              <li><span class="ic">✓</span> The five systems on a single page</li>
-              <li><span class="ic">✓</span> What "done enough" looks like for each</li>
-              <li><span class="ic">✓</span> A quick gap-check to find your weakest spot</li>
+              <li><span class="ic">✓</span> Answer a few honest questions about your build</li>
+              <li><span class="ic">✓</span> Get your weakest system named, and why it matters</li>
+              <li><span class="ic">✓</span> Leave with a clear next move, not another to-do list</li>
             </ul>
           </div>
           <div class="capture-card">
-            <label for="email">Send me the map</label>
-            <div class="form" id="form">
-              <input type="email" id="email" placeholder="you@yourbusiness.com" aria-label="Email address" />
-              <button class="btn btn-ink" id="submit">Send it to me <span class="arr">→</span></button>
-            </div>
-            <div class="form-note">Free. One email to confirm. Unsubscribe anytime.</div>
-            <div class="done" id="done">Done. Check your inbox. ✦</div>
+            <label>Find your missing system</label>
+            <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 2px;">Two minutes. See your result instantly.</p>
+            <a href="/diagnostic.html" class="btn btn-ink" style="width:100%;margin-top:16px;">Start the diagnostic <span class="arr">→</span></a>
+            <div class="form-note">Free, no signup to begin.</div>
           </div>
         </div>
       </div>
@@ -381,16 +378,8 @@
   const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // Email capture — demo only. Connect to your email tool (Kit / MailerLite):
-  // replace this handler with your form action, or POST the email to your provider.
-  const submit=document.getElementById('submit'),email=document.getElementById('email'),
-        form=document.getElementById('form'),done=document.getElementById('done');
-  submit.addEventListener('click',()=>{
-    const v=email.value.trim();
-    if(!v||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){email.style.outline='2px solid #1B1A18';email.focus();return;}
-    form.style.display='none';done.style.display='block';
-  });
-  email.addEventListener('input',()=>email.style.outline='none');
+  // The free diagnostic lives at /diagnostic and captures email at the results step.
+  // Point the "Start the diagnostic" button's href there once it's deployed.
 
   // Buy / apply buttons are placeholders.
   // Ebook → paste your Gumroad (or Lemon Squeezy) product link into the matching href.

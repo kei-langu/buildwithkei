@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Find Your Missing System — Kei</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F1E7; --paper-2:#FBF8F1; --card:#FFFFFF;
+    --ink:#1B1A18; --ink-soft:#4A463F; --ink-faint:#8C857A;
+    --clay:#B8431F; --clay-deep:#9A3417; --clay-tint:#F0DDD2;
+    --line:#E3DACB; --teal:#2C4A47;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;min-height:100vh;
+    background-image:radial-gradient(circle at 1px 1px, rgba(27,26,24,.04) 1px, transparent 0);
+    background-size:26px 26px;
+    display:flex;flex-direction:column;
+  }
+  h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.08;letter-spacing:-.01em}
+  a{color:inherit}
+  em{font-style:italic;color:var(--clay)}
+  .wrap{width:100%;max-width:640px;margin:0 auto;padding:28px 22px 60px;flex:1;display:flex;flex-direction:column}
+
+  /* header */
+  .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .top .node{width:26px;height:26px}
+  .top .name{font-family:'Playfair Display',serif;font-weight:700;font-size:19px}
+  .top .name span{color:var(--ink-faint);font-family:'Hanken Grotesk',sans-serif;font-weight:500;font-size:14px}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+    font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:17px;
+    padding:15px 26px;border-radius:100px;cursor:pointer;border:1.5px solid transparent;
+    transition:transform .16s ease,background .2s ease,box-shadow .2s ease;text-decoration:none}
+  .btn-primary{background:var(--clay);color:#fff;box-shadow:0 10px 22px -12px rgba(184,67,31,.6)}
+  .btn-primary:hover{background:var(--clay-deep);transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+  .btn-ink{background:var(--ink);color:#fff}
+  .btn-ink:hover{background:#000}
+  .arr{transition:transform .2s}
+  .btn:hover .arr{transform:translate(3px,0)}
+
+  .screen{flex:1;display:flex;flex-direction:column;justify-content:center;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .hidden{display:none}
+
+  /* intro */
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--clay);background:var(--clay-tint);padding:7px 14px;border-radius:100px;align-self:flex-start;margin-bottom:22px}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--clay)}
+  .intro h1{font-size:clamp(38px,8vw,56px);margin-bottom:18px}
+  .intro p{font-size:19px;color:var(--ink-soft);max-width:44ch;margin-bottom:14px}
+  .intro .meta{font-size:14.5px;color:var(--ink-faint);margin-bottom:30px}
+  .intro .btn{align-self:flex-start}
+
+  /* progress */
+  .prog-wrap{margin-bottom:34px}
+  .prog-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--ink-faint);margin-bottom:10px;font-weight:600;letter-spacing:.02em}
+  .prog{height:6px;background:var(--line);border-radius:100px;overflow:hidden}
+  .prog-fill{height:100%;background:var(--clay);border-radius:100px;transition:width .35s cubic-bezier(.2,.7,.2,1);width:0}
+
+  /* question */
+  .q h2{font-size:clamp(26px,5.4vw,36px);margin-bottom:28px}
+  .options{display:flex;flex-direction:column;gap:12px}
+  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
+    background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px;
+    font-family:'Hanken Grotesk',sans-serif;font-size:18px;font-weight:600;color:var(--ink);
+    transition:border-color .15s,transform .15s,box-shadow .2s}
+  .opt:hover{border-color:var(--clay);transform:translateY(-2px);box-shadow:0 14px 30px -22px rgba(27,26,24,.5)}
+  .opt .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;transition:all .15s}
+  .opt:hover .dot{border-color:var(--clay)}
+  .opt .sub{color:var(--ink-faint);font-weight:500;font-size:14.5px;margin-left:auto}
+  .back{margin-top:24px;background:none;border:none;color:var(--ink-faint);font-size:15px;cursor:pointer;font-family:inherit;align-self:flex-start}
+  .back:hover{color:var(--clay)}
+
+  /* result */
+  .res-label{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);margin-bottom:12px}
+  .res h1{font-size:clamp(34px,7vw,52px);margin-bottom:20px}
+  .res .diag{font-size:19px;color:var(--ink-soft);margin-bottom:24px}
+  .move{background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--clay);border-radius:12px;padding:20px 22px;margin-bottom:30px}
+  .move .mlab{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin-bottom:6px}
+  .move p{font-size:17px;color:var(--ink);margin:0}
+
+  .bars{margin-bottom:32px}
+  .bars .bt{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  .bar{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+  .bar .bn{width:78px;font-size:14.5px;font-weight:600;flex:none}
+  .bar .btrack{flex:1;height:9px;background:var(--line);border-radius:100px;overflow:hidden}
+  .bar .bfill{height:100%;border-radius:100px;background:var(--teal);transition:width .6s ease}
+  .bar.weak .bn{color:var(--clay)}
+  .bar.weak .bfill{background:var(--clay)}
+
+  .capture{background:linear-gradient(180deg,var(--clay),var(--clay-deep));border-radius:22px;padding:30px 26px;color:#fff;position:relative;overflow:hidden;margin-bottom:20px}
+  .capture:before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.09) 1px,transparent 0);background-size:22px 22px}
+  .capture h3{position:relative;font-size:24px;margin-bottom:8px;color:#fff}
+  .capture p{position:relative;font-size:16px;color:rgba(255,255,255,.9);margin-bottom:18px}
+  .cform{position:relative;display:flex;flex-direction:column;gap:10px}
+  .cform input{padding:15px 18px;border-radius:13px;border:none;font-size:16.5px;font-family:inherit;background:rgba(255,255,255,.96);color:var(--ink)}
+  .cform input::placeholder{color:#8C857A}
+  .cform .btn{width:100%}
+  .cnote{position:relative;margin-top:12px;font-size:13px;color:rgba(255,255,255,.78)}
+  .cdone{position:relative;display:none;font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:#fff;margin-top:6px}
+  .next-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .restart{background:none;border:none;color:var(--ink-faint);font-size:14.5px;cursor:pointer;font-family:inherit;text-decoration:underline;align-self:center;margin-top:8px}
+  .restart:hover{color:var(--clay)}
+  @media(min-width:560px){.cform{flex-direction:row}.cform input{flex:1}.cform .btn{width:auto;white-space:nowrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <svg class="node" viewBox="0 0 32 32" fill="none">
+      <circle cx="6" cy="16" r="3.4" fill="#B8431F"/><circle cx="16" cy="6" r="3.4" fill="#1B1A18"/>
+      <circle cx="26" cy="16" r="3.4" fill="#1B1A18"/><circle cx="16" cy="26" r="3.4" fill="#1B1A18"/>
+      <path d="M8.6 14 13.6 8M18.4 8 23.4 14M23.4 18 18.4 24M13.6 24 8.6 18" stroke="#1B1A18" stroke-width="1.5"/>
+    </svg>
+    <div class="name">Kei <span>· Find Your Missing System</span></div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="screen intro" id="intro">
+    <span class="eyebrow"><span class="dot"></span>Free diagnostic</span>
+    <h1>Find the <em>system</em> you're missing.</h1>
+    <p>Ten honest questions about what you've built. At the end, I'll name the one system most likely holding you back, and the first move to fix it.</p>
+    <p class="meta">About two minutes. No signup to begin.</p>
+    <button class="btn btn-primary" onclick="start()">Start the diagnostic <span class="arr">→</span></button>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="screen q hidden" id="qscreen">
+    <div class="prog-wrap">
+      <div class="prog-row"><span id="qcount">Question 1 of 10</span><span id="qpct">10%</span></div>
+      <div class="prog"><div class="prog-fill" id="progfill"></div></div>
+    </div>
+    <h2 id="qtext"></h2>
+    <div class="options">
+      <button class="opt" onclick="answer(2)"><span class="dot"></span>Yes<span class="sub">it's handled</span></button>
+      <button class="opt" onclick="answer(1)"><span class="dot"></span>Sort of<span class="sub">partly</span></button>
+      <button class="opt" onclick="answer(0)"><span class="dot"></span>No<span class="sub">not really</span></button>
+    </div>
+    <button class="back" id="backbtn" onclick="back()">← Back</button>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen res hidden" id="result">
+    <div class="res-label">Your missing system</div>
+    <h1 id="rname"></h1>
+    <p class="diag" id="rdiag"></p>
+    <div class="move">
+      <div class="mlab">Your first move</div>
+      <p id="rmove"></p>
+    </div>
+    <div class="bars">
+      <div class="bt">How your five systems scored</div>
+      <div id="barlist"></div>
+    </div>
+    <div class="capture">
+      <h3>Get the full breakdown</h3>
+      <p>I'll send the deeper read on your missing system, plus how the other four connect to it. No spam.</p>
+      <div class="cform" id="cform">
+        <input type="email" id="cemail" placeholder="you@yourbusiness.com" aria-label="Email" />
+        <button class="btn btn-ink" id="csubmit">Send it <span class="arr">→</span></button>
+      </div>
+      <div class="cnote">Free. One email, unsubscribe anytime.</div>
+      <div class="cdone" id="cdone">Done. Check your inbox. ✦</div>
+    </div>
+    <div class="next-steps">
+      <a href="#" class="btn btn-ghost" data-link="ebook">Read the $19 ebook on all five systems</a>
+      <a href="#" class="btn btn-ghost" data-link="audit">Have me map your systems with you</a>
+    </div>
+    <button class="restart" onclick="restart()">Start over</button>
+  </section>
+</div>
+
+<script>
+  // Two questions per system. Lowest total = the missing system.
+  const QUESTIONS = [
+    {sys:"Capture",  t:"When someone shows up and isn't ready to commit, can you reach them again later?"},
+    {sys:"Capture",  t:"Do you have a way to turn interested visitors into contacts you actually own?"},
+    {sys:"Activate", t:"Can you name the exact moment a new user first gets real value from what you built?"},
+    {sys:"Activate", t:"Right after signup, is the next step obvious, with a clear path to that first win?"},
+    {sys:"Trust",    t:"Does a skeptical first-time visitor have visible reasons to believe you're legit and safe?"},
+    {sys:"Trust",    t:"Is there proof, a result or a testimonial, that someone like them has succeeded with you?"},
+    {sys:"Retain",   t:"Is there a real reason, plus a nudge, for someone to come back a second time?"},
+    {sys:"Retain",   t:"Does coming back get easier or better the more someone uses what you built?"},
+    {sys:"Measure",  t:"Can you see where people drop off between showing up and activating or paying?"},
+    {sys:"Measure",  t:"When a number looks wrong, do you know your next move to find out why?"}
+  ];
+
+  const RESULTS = {
+    Capture: {
+      diag:"You're losing the people who show up but aren't ready yet. Traffic arrives and vanishes because there's no way to stay in touch, so every visitor who doesn't act immediately is gone for good.",
+      move:"Add one place to capture an email, with a real reason to give it. Turn rented attention into an audience you own."
+    },
+    Activate:{
+      diag:"People get in, but most don't reach the point where your product actually pays off. The gap between signing up and first real value is where you're quietly bleeding.",
+      move:"Name your 'aha' moment in one sentence, then cut every step between signup and it. Make the next move obvious at all times."
+    },
+    Trust:{
+      diag:"Careful people don't yet believe you enough to start. You may be explaining what you do well, but explaining isn't the same as reassuring, and a stranger arrives assuming nothing.",
+      move:"Find the scariest question a cautious user is silently asking, and answer it in one plain sentence, right where they decide."
+    },
+    Retain:{
+      diag:"People try you once and don't come back, because there isn't yet a real reason to. Reminders won't fix that on their own, a nudge only works when there's something worth returning to.",
+      move:"Build one genuine reason to come back before you build another reminder. Make the second visit easier and better than the first."
+    },
+    Measure:{
+      diag:"You can't clearly see where this is breaking, which means every fix is a guess. That's the most expensive gap of all, because it hides the others and turns silence into a mystery instead of a signal.",
+      move:"Track five moments, arrived, started, activated, paid, returned, and watch the rate between each. Then ask the people who dropped off why."
+    }
+  };
+
+  const ORDER = ["Measure","Capture","Activate","Trust","Retain"]; // tie-break priority
+  let idx=0, scores={Capture:0,Activate:0,Trust:0,Retain:0,Measure:0}, history=[];
+
+  const $=id=>document.getElementById(id);
+  function show(screen){["intro","qscreen","result"].forEach(s=>$(s).classList.toggle("hidden",s!==screen));}
+
+  function start(){idx=0;scores={Capture:0,Activate:0,Trust:0,Retain:0,Measure:0};history=[];show("qscreen");render();}
+  function render(){
+    const q=QUESTIONS[idx];
+    $("qtext").textContent=q.t;
+    $("qcount").textContent=`Question ${idx+1} of ${QUESTIONS.length}`;
+    const pct=Math.round((idx)/QUESTIONS.length*100);
+    $("qpct").textContent=pct+"%";
+    $("progfill").style.width=pct+"%";
+    $("backbtn").style.visibility=idx===0?"hidden":"visible";
+  }
+  function answer(val){
+    scores[QUESTIONS[idx].sys]+=val;
+    history.push(val);
+    idx++;
+    if(idx>=QUESTIONS.length){finish();}
+    else{render();}
+  }
+  function back(){
+    if(idx===0)return;
+    idx--;
+    scores[QUESTIONS[idx].sys]-=history.pop();
+    show("qscreen");render();
+  }
+  function finish(){
+    $("progfill").style.width="100%";
+    // lowest score wins; tie-break by ORDER
+    let missing=ORDER[0], low=Infinity;
+    ORDER.forEach(s=>{ if(scores[s]<low){low=scores[s];missing=s;} });
+    $("rname").textContent=missing;
+    $("rdiag").textContent=RESULTS[missing].diag;
+    $("rmove").textContent=RESULTS[missing].move;
+    // bars (max 4 per system)
+    const bl=$("barlist");bl.innerHTML="";
+    ["Capture","Activate","Trust","Retain","Measure"].forEach(s=>{
+      const w=Math.round(scores[s]/4*100);
+      const weak=(s===missing)?" weak":"";
+      bl.insertAdjacentHTML("beforeend",
+        `<div class="bar${weak}"><span class="bn">${s}</span><div class="btrack"><div class="bfill" style="width:0"></div></div></div>`);
+      const fill=bl.lastElementChild.querySelector(".bfill");
+      requestAnimationFrame(()=>{setTimeout(()=>fill.style.width=w+"%",60);});
+    });
+    show("result");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function restart(){show("intro");window.scrollTo({top:0,behavior:"smooth"});}
+
+  // Email capture — connect to Kit / MailerLite here (replace handler or POST the email).
+  $("csubmit").addEventListener("click",()=>{
+    const v=$("cemail").value.trim();
+    if(!v||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){$("cemail").style.outline="2px solid #1B1A18";$("cemail").focus();return;}
+    $("cform").style.display="none";$("cdone").style.display="block";
+  });
+  $("cemail").addEventListener("input",()=>$("cemail").style.outline="none");
+
+  // Placeholder result CTAs — point ebook to Gumroad, audit to your application link.
+  document.querySelectorAll("[data-link]").forEach(a=>a.addEventListener("click",e=>{
+    if(a.getAttribute("href")==="#"){e.preventDefault();alert("Placeholder — link this to your ebook / application page.");}
+  }));
+</script>
+</body>
+</html>

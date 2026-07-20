@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --oat:#E7E6DF; --oat-2:#EFEEE8; --ink:#191B18; --ink-2:#3D4039;
+    --oat:#F1EFE9; --oat-2:#FCFAF5; --ink:#191B18; --ink-2:#3D4039;
     --pine:#1D4A44; --pine-2:#173B36; --amber:#BE8639; --amber-2:#D9B676;
     --muted:#6E6E63; --line:#D3D3C7;
   }
@@ -241,10 +241,20 @@
   }
   function restart(){show("intro");window.scrollTo({top:0,behavior:"smooth"});}
 
+  // Kit (ConvertKit) capture — posts to your form, keeps the user on this page.
+  var KIT_ACTION="https://app.kit.com/forms/9705488/subscriptions";
+  function currentResult(){ var el=$("rname"); return el?el.textContent.trim():""; }
   $("csubmit").addEventListener("click",()=>{
     const v=$("cemail").value.trim();
-    if(!v||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){$("cemail").style.outline="2px solid #BE8639";$("cemail").focus();return;}
-    $("cform").style.display="none";$("cdone").style.display="block";
+    if(!v||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){$("cemail").style.outline="2px solid #BE8639";$("cemail").focus();return;}
+    const data=new FormData();
+    data.append("email_address", v);
+    // When you add a "missing_system" custom field in Kit, uncomment the next line:
+    // data.append("fields[missing_system]", currentResult());
+    fetch(KIT_ACTION,{method:"POST",body:data,headers:{"Accept":"application/json"}})
+      .then(r=>r.json().catch(()=>({})))
+      .then(()=>{ $("cform").style.display="none";$("cdone").style.display="block"; })
+      .catch(()=>{ $("cform").style.display="none";$("cdone").style.display="block"; });
   });
   $("cemail").addEventListener("input",()=>$("cemail").style.outline="none");
 

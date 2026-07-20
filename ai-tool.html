@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What AI Should You Actually Use? — Kei</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --oat:#E7E6DF; --oat-2:#EFEEE8; --ink:#191B18; --ink-2:#3D4039;
+    --pine:#1D4A44; --pine-2:#173B36; --amber:#BE8639; --amber-2:#D9B676;
+    --muted:#6E6E63; --line:#D3D3C7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--oat);color:var(--ink);font-family:'Inter',sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;
+    background-image:radial-gradient(circle at 1px 1px, rgba(25,27,24,.05) 1px, transparent 0);background-size:26px 26px}
+  h1,h2,h3{font-family:'Geist',sans-serif;font-weight:600;line-height:1.06;letter-spacing:-.02em}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .wrap{width:100%;max-width:660px;margin:0 auto;padding:26px 22px 60px;flex:1;display:flex;flex-direction:column}
+
+  .top{display:flex;align-items:center;gap:10px;padding-bottom:16px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+  .top .name{font-family:'Geist',sans-serif;font-weight:700;font-size:18px}
+  .top .name span{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:13px}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:'Geist',sans-serif;font-weight:600;font-size:16px;padding:14px 24px;border-radius:2px;border:2px solid transparent;cursor:pointer;transition:.16s;text-decoration:none}
+  .btn-primary{background:var(--pine);color:var(--oat)}
+  .btn-primary:hover{background:var(--pine-2)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--oat)}
+  .btn-amber{background:var(--amber);color:var(--ink)}
+  .btn-amber:hover{background:var(--amber-2)}
+
+  .screen{flex:1;display:flex;flex-direction:column;justify-content:center;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .hidden{display:none}
+
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+  .eyebrow:before{content:"";width:22px;height:2px;background:var(--amber)}
+  .intro h1{font-size:clamp(36px,7vw,52px);margin-bottom:18px}
+  .intro h1 em{font-style:normal;color:var(--pine)}
+  .intro p{font-size:19px;color:var(--ink-2);max-width:46ch;margin-bottom:14px}
+  .intro .meta{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-bottom:30px}
+
+  .prog-wrap{margin-bottom:34px}
+  .prog-row{display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-bottom:10px;letter-spacing:.04em}
+  .prog{height:6px;background:var(--line);overflow:hidden}
+  .prog-fill{height:100%;background:var(--amber);transition:width .35s cubic-bezier(.2,.7,.2,1);width:0}
+
+  .q h2{font-size:clamp(25px,5.2vw,34px);margin-bottom:26px}
+  .options{display:flex;flex-direction:column;gap:11px}
+  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;background:var(--oat-2);border:1.5px solid var(--ink);border-radius:3px;padding:17px 19px;font-family:'Inter',sans-serif;font-size:17.5px;font-weight:600;color:var(--ink);transition:.15s;box-shadow:3px 3px 0 rgba(25,27,24,0)}
+  .opt:hover{border-color:var(--pine);box-shadow:3px 3px 0 rgba(29,74,68,.18);transform:translate(-1px,-1px)}
+  .opt .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none;transition:.15s}
+  .opt:hover .dot{border-color:var(--pine);background:var(--pine)}
+  .back{margin-top:22px;background:none;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:13px;cursor:pointer;align-self:flex-start}
+  .back:hover{color:var(--pine)}
+
+  .res-label{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:var(--amber);text-transform:uppercase;margin-bottom:12px}
+  .res h1{font-size:clamp(34px,7vw,50px);margin-bottom:20px}
+  .res .why{font-size:19px;color:var(--ink-2);margin-bottom:22px}
+  .box{background:var(--oat-2);border:2px solid var(--ink);border-left:5px solid var(--amber);border-radius:2px;padding:18px 22px;margin-bottom:18px}
+  .box .blab{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+  .box p{font-size:16.5px;color:var(--ink);margin:0}
+  .runner{font-size:16px;color:var(--ink-2);margin-bottom:28px}
+  .runner b{color:var(--ink)}
+
+  .capture{background:var(--pine);border-radius:3px;padding:30px 26px;color:var(--oat);margin-bottom:20px}
+  .capture h3{font-size:23px;margin-bottom:8px;color:var(--oat)}
+  .capture p{font-size:15.5px;color:rgba(231,230,223,.85);margin-bottom:18px}
+  .cform{display:flex;flex-direction:column;gap:10px}
+  .cform input{padding:15px 18px;border-radius:2px;border:2px solid transparent;font-size:16.5px;font-family:inherit;background:var(--oat-2);color:var(--ink)}
+  .cform input::placeholder{color:var(--muted)}
+  .cform .btn{width:100%}
+  .cnote{margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(231,230,223,.72)}
+  .cdone{display:none;font-family:'Geist',sans-serif;font-weight:600;font-size:20px;color:var(--amber-2);margin-top:6px}
+  .next-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .restart{background:none;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:13px;cursor:pointer;text-decoration:underline;align-self:center;margin-top:8px}
+  .restart:hover{color:var(--pine)}
+  @media(min-width:560px){.cform{flex-direction:row}.cform input{flex:1}.cform .btn{width:auto;white-space:nowrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+      <circle cx="6" cy="16" r="3.2" fill="#BE8639"/><circle cx="16" cy="6" r="3.2" fill="#1D4A44"/>
+      <circle cx="26" cy="16" r="3.2" fill="#1D4A44"/><circle cx="16" cy="26" r="3.2" fill="#1D4A44"/>
+      <path d="M8.6 14 13.6 8M18.4 8 23.4 14M23.4 18 18.4 24M13.6 24 8.6 18" stroke="#191B18" stroke-width="1.5"/>
+    </svg>
+    <div class="name">Kei <span>· what AI should you actually use?</span></div>
+  </div>
+
+  <section class="screen intro" id="intro">
+    <div class="eyebrow">Free · no hype</div>
+    <h1>What AI should you <em>actually</em> use?</h1>
+    <p>Six questions. At the end I'll tell you which AI is worth paying for in your situation, and I'll tell you honestly if the answer is "none yet."</p>
+    <p class="meta">About two minutes · no signup to begin</p>
+    <button class="btn btn-primary" onclick="start()" style="align-self:flex-start">Start →</button>
+  </section>
+
+  <section class="screen q hidden" id="qscreen">
+    <div class="prog-wrap">
+      <div class="prog-row"><span id="qcount">Question 1 of 6</span><span id="qpct">0%</span></div>
+      <div class="prog"><div class="prog-fill" id="progfill"></div></div>
+    </div>
+    <h2 id="qtext"></h2>
+    <div class="options" id="opts"></div>
+    <button class="back" id="backbtn" onclick="back()">&larr; back</button>
+  </section>
+
+  <section class="screen res hidden" id="result">
+    <div class="res-label" id="rlabel">Your pick</div>
+    <h1 id="rname"></h1>
+    <p class="why" id="rwhy"></p>
+    <div class="box"><div class="blab" id="rblab">Before you pay</div><p id="rcaveat"></p></div>
+    <p class="runner" id="rrunner"></p>
+    <div class="capture">
+      <h3 id="chead">Get the full breakdown</h3>
+      <p id="csub">I'll send the deeper guide on getting the most out of your pick, plus how the others compare. No spam.</p>
+      <div class="cform" id="cform">
+        <input type="email" id="cemail" placeholder="you@yourbusiness.com" aria-label="Email" />
+        <button class="btn btn-amber" id="csubmit">Send it &rarr;</button>
+      </div>
+      <div class="cnote">Free · one email · unsubscribe anytime</div>
+      <div class="cdone" id="cdone">Done. Check your inbox.</div>
+    </div>
+    <div class="next-steps" id="nextsteps"></div>
+    <button class="restart" onclick="restart()">start over</button>
+  </section>
+</div>
+
+<script>
+  const QUESTIONS = [
+    {q:"What would you mainly use AI for?", opts:[
+      {l:"Writing, emails, and documents", s:{Claude:3,ChatGPT:1}},
+      {l:"Researching and finding information", s:{Perplexity:3,ChatGPT:1}},
+      {l:"General everyday help (a bit of everything)", s:{ChatGPT:3,Gemini:1}},
+      {l:"Spreadsheets and business tasks", s:{Copilot:2,ChatGPT:1,Gemini:1}},
+      {l:"Honestly, I'm not sure yet", s:{None:3}, flag:"notSure"}
+    ]},
+    {q:"Where do you already do most of your work?", opts:[
+      {l:"Google Workspace (Gmail, Docs, Sheets)", s:{Gemini:2}},
+      {l:"Microsoft 365 (Outlook, Word, Excel, Teams)", s:{Copilot:2}},
+      {l:"Just a browser, no particular ecosystem", s:{ChatGPT:1,Claude:1}},
+      {l:"Mostly on my phone", s:{ChatGPT:1}}
+    ]},
+    {q:"How often would you realistically use it?", opts:[
+      {l:"Every day", s:{}, flag:"daily"},
+      {l:"A few times a week", s:{}},
+      {l:"Occasionally", s:{None:1}},
+      {l:"Rarely, if I'm honest", s:{None:3}, flag:"rarely"}
+    ]},
+    {q:"How much does writing quality and tone matter to you?", opts:[
+      {l:"A lot, I write or communicate constantly", s:{Claude:2}},
+      {l:"Somewhat", s:{Claude:1}},
+      {l:"Not really", s:{}}
+    ]},
+    {q:"Do you need current information with sources you can check?", opts:[
+      {l:"Yes, often", s:{Perplexity:2}},
+      {l:"Sometimes", s:{Perplexity:1}},
+      {l:"No", s:{}}
+    ]},
+    {q:"How do you feel about paying?", opts:[
+      {l:"Happy to pay ~$20/month if it's genuinely worth it", s:{}, flag:"happyPay"},
+      {l:"Only if it's clearly worth it", s:{}},
+      {l:"I'd rather stick to free for now", s:{None:3}, flag:"preferFree"}
+    ]}
+  ];
+
+  const RESULTS = {
+    ChatGPT:{why:"The most capable all-rounder, and the safest default when you want one tool that does a bit of everything well.",
+      caveat:"The free version is genuinely good. Only pay for Plus if you'll use it several times a week, or you want the newest features and image tools.",
+      runner:"Claude, if writing quality matters to you more than breadth."},
+    Claude:{why:"The strongest choice for writing, long documents, and thinking through nuanced things. It tends to sound more human and handle tone better.",
+      caveat:"If you mostly need quick everyday answers rather than serious writing, the free tier may be all you need.",
+      runner:"ChatGPT, for a broader everyday all-rounder."},
+    Gemini:{why:"You live in Google Workspace, so Gemini sitting right inside Gmail, Docs, and Sheets saves you the most friction.",
+      caveat:"If you rarely touch those apps, a standalone tool like ChatGPT or Claude may serve you better than the integration.",
+      runner:"ChatGPT, for general use outside Google."},
+    Copilot:{why:"Your work lives in Microsoft 365, and Copilot inside Outlook, Word, and Excel is where it earns its keep.",
+      caveat:"The value is mostly in the Office integration. If you don't work in those apps daily, it's a weaker buy.",
+      runner:"ChatGPT, for general tasks beyond Office."},
+    Perplexity:{why:"You need current answers with sources you can actually check, and that's exactly what Perplexity is built for.",
+      caveat:"For writing and general tasks it's thinner. Many people pair it with a free general tool rather than paying for both.",
+      runner:"ChatGPT, if you'd rather have one tool that also does research passably."},
+    None:{why:"Honestly, based on what you told me, you don't need to pay for anything yet. Your usage is light or still taking shape, and paying now would mostly buy you guilt about not using it.",
+      caveat:"Start with the free version of ChatGPT or Claude. Use it for a couple of real tasks this month and see if it earns a place in your week. If it does, come back and we'll pick the right paid one.",
+      runner:"The goal was never to get you to spend money. It was to help you decide with confidence, and right now the confident decision is to wait."}
+  };
+
+  const PAID_ORDER = ["ChatGPT","Claude","Perplexity","Gemini","Copilot"];
+  let idx=0, scores={}, flags={}, history=[];
+
+  const $=id=>document.getElementById(id);
+  function show(s){["intro","qscreen","result"].forEach(x=>$(x).classList.toggle("hidden",x!==s));}
+  function reset(){idx=0;scores={ChatGPT:0,Claude:0,Gemini:0,Copilot:0,Perplexity:0,None:0};flags={};history=[];}
+
+  function start(){reset();show("qscreen");render();}
+  function render(){
+    const q=QUESTIONS[idx];
+    $("qtext").textContent=q.q;
+    $("qcount").textContent="Question "+(idx+1)+" of "+QUESTIONS.length;
+    const pct=Math.round(idx/QUESTIONS.length*100);
+    $("qpct").textContent=pct+"%";$("progfill").style.width=pct+"%";
+    $("backbtn").style.visibility=idx===0?"hidden":"visible";
+    const box=$("opts");box.innerHTML="";
+    q.opts.forEach(function(o,i){
+      const b=document.createElement("button");
+      b.className="opt";b.innerHTML='<span class="dot"></span>'+o.l;
+      b.onclick=function(){answer(i);};box.appendChild(b);
+    });
+  }
+  function answer(i){
+    const o=QUESTIONS[idx].opts[i];
+    history.push(o);
+    for(const t in (o.s||{})) scores[t]+=o.s[t];
+    if(o.flag) flags[o.flag]=true;
+    idx++;
+    if(idx>=QUESTIONS.length){finish();}else{render();}
+  }
+  function back(){
+    if(idx===0)return;
+    idx--;
+    const o=history.pop();
+    for(const t in (o.s||{})) scores[t]-=o.s[t];
+    if(o.flag) delete flags[o.flag];
+    show("qscreen");render();
+  }
+  function finish(){
+    $("progfill").style.width="100%";
+    let leader=PAID_ORDER[0];
+    PAID_ORDER.forEach(function(t){ if(scores[t]>scores[leader]) leader=t; });
+    if(flags.daily){scores.None-=2;scores[leader]+=1;}
+    if(flags.happyPay){scores.None-=1;scores[leader]+=1;}
+    let result;
+    if(flags.notSure && (flags.rarely||flags.preferFree)) result="None";
+    else if(scores.None > scores[leader]) result="None";
+    else result=leader;
+    showResult(result);
+  }
+  function showResult(r){
+    const R=RESULTS[r];
+    if(r==="None"){
+      $("rlabel").textContent="My honest read";
+      $("rname").textContent="None, not yet";
+      $("rblab").textContent="What to do instead";
+      $("chead").textContent="Want a simple way to start?";
+      $("csub").textContent="I'll send you a short, free guide to trying AI without paying a cent, and how to tell when it's finally worth it.";
+      $("nextsteps").innerHTML='<a href="#" class="btn btn-ghost" data-link="health">See where AI could fit in your business, free</a>';
+    }else{
+      $("rlabel").textContent="Your pick";
+      $("rname").textContent=r;
+      $("rblab").textContent="Before you pay";
+      $("chead").textContent="Get the full breakdown";
+      $("csub").textContent="I'll send the deeper guide on getting the most out of "+r+", plus how the others compare. No spam.";
+      $("nextsteps").innerHTML=
+        '<a href="#" class="btn btn-ghost" data-link="guide">The AI Subscription Guide, which AI is worth paying for ($7)</a>'+
+        '<a href="#" class="btn btn-ghost" data-link="health">Or see where AI fits in your whole business, free</a>';
+    }
+    $("rwhy").textContent=R.why;
+    $("rcaveat").textContent=R.caveat;
+    $("rrunner").innerHTML = r==="None" ? R.runner : "<b>Runner-up:</b> "+R.runner;
+    $("cform").style.display="flex";$("cdone").style.display="none";$("cemail").value="";
+    bindLinks();
+    show("result");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function restart(){show("intro");window.scrollTo({top:0,behavior:"smooth"});}
+
+  function bindLinks(){
+    document.querySelectorAll("[data-link]").forEach(function(a){
+      a.onclick=function(e){ if(a.getAttribute("href")==="#"){e.preventDefault();
+        alert("Placeholder - link this to your $7 guide / health-check tool.");}};
+    });
+  }
+
+  $("csubmit").addEventListener("click",function(){
+    const v=$("cemail").value.trim();
+    if(!v||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){$("cemail").style.outline="2px solid #BE8639";$("cemail").focus();return;}
+    $("cform").style.display="none";$("cdone").style.display="block";
+  });
+  $("cemail").addEventListener("input",function(){$("cemail").style.outline="none";});
+</script>
+</body>
+</html>

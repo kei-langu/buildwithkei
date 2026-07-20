@@ -6,137 +6,113 @@
 <title>Find Your Missing System — Kei</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F6F1E7; --paper-2:#FBF8F1; --card:#FFFFFF;
-    --ink:#1B1A18; --ink-soft:#4A463F; --ink-faint:#8C857A;
-    --clay:#B8431F; --clay-deep:#9A3417; --clay-tint:#F0DDD2;
-    --line:#E3DACB; --teal:#2C4A47;
+    --oat:#E7E6DF; --oat-2:#EFEEE8; --ink:#191B18; --ink-2:#3D4039;
+    --pine:#1D4A44; --pine-2:#173B36; --amber:#BE8639; --amber-2:#D9B676;
+    --muted:#6E6E63; --line:#D3D3C7;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    background:var(--paper);color:var(--ink);
-    font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6;
-    -webkit-font-smoothing:antialiased;min-height:100vh;
-    background-image:radial-gradient(circle at 1px 1px, rgba(27,26,24,.04) 1px, transparent 0);
-    background-size:26px 26px;
-    display:flex;flex-direction:column;
-  }
-  h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.08;letter-spacing:-.01em}
-  a{color:inherit}
-  em{font-style:italic;color:var(--clay)}
-  .wrap{width:100%;max-width:640px;margin:0 auto;padding:28px 22px 60px;flex:1;display:flex;flex-direction:column}
+  body{background:var(--oat);color:var(--ink);font-family:'Inter',sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;
+    background-image:radial-gradient(circle at 1px 1px, rgba(25,27,24,.05) 1px, transparent 0);background-size:26px 26px}
+  h1,h2,h3{font-family:'Geist',sans-serif;font-weight:600;line-height:1.06;letter-spacing:-.02em}
+  em{font-style:normal;color:var(--pine)}
+  .wrap{width:100%;max-width:660px;margin:0 auto;padding:26px 22px 60px;flex:1;display:flex;flex-direction:column}
 
-  /* header */
-  .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-  .top .node{width:26px;height:26px}
-  .top .name{font-family:'Playfair Display',serif;font-weight:700;font-size:19px}
-  .top .name span{color:var(--ink-faint);font-family:'Hanken Grotesk',sans-serif;font-weight:500;font-size:14px}
+  .top{display:flex;align-items:center;gap:10px;padding-bottom:16px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+  .top .name{font-family:'Geist',sans-serif;font-weight:700;font-size:18px}
+  .top .name span{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:13px}
 
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;
-    font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:17px;
-    padding:15px 26px;border-radius:100px;cursor:pointer;border:1.5px solid transparent;
-    transition:transform .16s ease,background .2s ease,box-shadow .2s ease;text-decoration:none}
-  .btn-primary{background:var(--clay);color:#fff;box-shadow:0 10px 22px -12px rgba(184,67,31,.6)}
-  .btn-primary:hover{background:var(--clay-deep);transform:translateY(-2px)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:'Geist',sans-serif;font-weight:600;font-size:16px;padding:14px 24px;border-radius:2px;border:2px solid transparent;cursor:pointer;transition:.16s;text-decoration:none}
+  .btn-primary{background:var(--pine);color:var(--oat)}
+  .btn-primary:hover{background:var(--pine-2)}
   .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
-  .btn-ink{background:var(--ink);color:#fff}
-  .btn-ink:hover{background:#000}
+  .btn-ghost:hover{background:var(--ink);color:var(--oat)}
+  .btn-amber{background:var(--amber);color:var(--ink)}
+  .btn-amber:hover{background:var(--amber-2)}
   .arr{transition:transform .2s}
   .btn:hover .arr{transform:translate(3px,0)}
 
-  .screen{flex:1;display:flex;flex-direction:column;justify-content:center;animation:fade .4s ease}
+  .screen{flex:1;display:flex;flex-direction:column;justify-content:center;animation:fade .35s ease}
   @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   .hidden{display:none}
 
-  /* intro */
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--clay);background:var(--clay-tint);padding:7px 14px;border-radius:100px;align-self:flex-start;margin-bottom:22px}
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--clay)}
-  .intro h1{font-size:clamp(38px,8vw,56px);margin-bottom:18px}
-  .intro p{font-size:19px;color:var(--ink-soft);max-width:44ch;margin-bottom:14px}
-  .intro .meta{font-size:14.5px;color:var(--ink-faint);margin-bottom:30px}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+  .eyebrow:before{content:"";width:22px;height:2px;background:var(--amber)}
+  .intro h1{font-size:clamp(36px,7.4vw,54px);margin-bottom:18px}
+  .intro p{font-size:19px;color:var(--ink-2);max-width:46ch;margin-bottom:14px}
+  .intro .meta{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);margin-bottom:30px}
   .intro .btn{align-self:flex-start}
 
-  /* progress */
   .prog-wrap{margin-bottom:34px}
-  .prog-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--ink-faint);margin-bottom:10px;font-weight:600;letter-spacing:.02em}
-  .prog{height:6px;background:var(--line);border-radius:100px;overflow:hidden}
-  .prog-fill{height:100%;background:var(--clay);border-radius:100px;transition:width .35s cubic-bezier(.2,.7,.2,1);width:0}
+  .prog-row{display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);margin-bottom:10px;letter-spacing:.04em}
+  .prog{height:6px;background:var(--line);overflow:hidden}
+  .prog-fill{height:100%;background:var(--amber);transition:width .35s cubic-bezier(.2,.7,.2,1);width:0}
 
-  /* question */
-  .q h2{font-size:clamp(26px,5.4vw,36px);margin-bottom:28px}
-  .options{display:flex;flex-direction:column;gap:12px}
-  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
-    background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px;
-    font-family:'Hanken Grotesk',sans-serif;font-size:18px;font-weight:600;color:var(--ink);
-    transition:border-color .15s,transform .15s,box-shadow .2s}
-  .opt:hover{border-color:var(--clay);transform:translateY(-2px);box-shadow:0 14px 30px -22px rgba(27,26,24,.5)}
-  .opt .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;transition:all .15s}
-  .opt:hover .dot{border-color:var(--clay)}
-  .opt .sub{color:var(--ink-faint);font-weight:500;font-size:14.5px;margin-left:auto}
-  .back{margin-top:24px;background:none;border:none;color:var(--ink-faint);font-size:15px;cursor:pointer;font-family:inherit;align-self:flex-start}
-  .back:hover{color:var(--clay)}
+  .q h2{font-size:clamp(25px,5.2vw,35px);margin-bottom:28px}
+  .options{display:flex;flex-direction:column;gap:11px}
+  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;background:var(--oat-2);border:1.5px solid var(--ink);border-radius:3px;padding:18px 20px;font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--ink);transition:.15s;box-shadow:3px 3px 0 rgba(25,27,24,0)}
+  .opt:hover{border-color:var(--pine);box-shadow:3px 3px 0 rgba(29,74,68,.18);transform:translate(-1px,-1px)}
+  .opt .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none;transition:.15s}
+  .opt:hover .dot{border-color:var(--pine);background:var(--pine)}
+  .opt .sub{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-weight:400;font-size:13px;margin-left:auto}
+  .back{margin-top:22px;background:none;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:13px;cursor:pointer;align-self:flex-start}
+  .back:hover{color:var(--pine)}
 
-  /* result */
-  .res-label{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);margin-bottom:12px}
+  .res-label{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
   .res h1{font-size:clamp(34px,7vw,52px);margin-bottom:20px}
-  .res .diag{font-size:19px;color:var(--ink-soft);margin-bottom:24px}
-  .move{background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--clay);border-radius:12px;padding:20px 22px;margin-bottom:30px}
-  .move .mlab{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin-bottom:6px}
+  .res .diag{font-size:19px;color:var(--ink-2);margin-bottom:24px}
+  .move{background:var(--oat-2);border:2px solid var(--ink);border-left:5px solid var(--amber);border-radius:2px;padding:20px 22px;margin-bottom:30px}
+  .move .mlab{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
   .move p{font-size:17px;color:var(--ink);margin:0}
 
   .bars{margin-bottom:32px}
-  .bars .bt{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  .bars .bt{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
   .bar{display:flex;align-items:center;gap:12px;margin-bottom:11px}
-  .bar .bn{width:78px;font-size:14.5px;font-weight:600;flex:none}
-  .bar .btrack{flex:1;height:9px;background:var(--line);border-radius:100px;overflow:hidden}
-  .bar .bfill{height:100%;border-radius:100px;background:var(--teal);transition:width .6s ease}
-  .bar.weak .bn{color:var(--clay)}
-  .bar.weak .bfill{background:var(--clay)}
+  .bar .bn{width:82px;font-size:14.5px;font-weight:600;flex:none;font-family:'Geist',sans-serif}
+  .bar .btrack{flex:1;height:9px;background:var(--line);overflow:hidden}
+  .bar .bfill{height:100%;background:var(--pine);transition:width .6s ease}
+  .bar.weak .bn{color:var(--amber)}
+  .bar.weak .bfill{background:var(--amber)}
 
-  .capture{background:linear-gradient(180deg,var(--clay),var(--clay-deep));border-radius:22px;padding:30px 26px;color:#fff;position:relative;overflow:hidden;margin-bottom:20px}
-  .capture:before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.09) 1px,transparent 0);background-size:22px 22px}
-  .capture h3{position:relative;font-size:24px;margin-bottom:8px;color:#fff}
-  .capture p{position:relative;font-size:16px;color:rgba(255,255,255,.9);margin-bottom:18px}
-  .cform{position:relative;display:flex;flex-direction:column;gap:10px}
-  .cform input{padding:15px 18px;border-radius:13px;border:none;font-size:16.5px;font-family:inherit;background:rgba(255,255,255,.96);color:var(--ink)}
-  .cform input::placeholder{color:#8C857A}
+  .capture{background:var(--pine);border-radius:3px;padding:30px 26px;color:var(--oat);margin-bottom:20px}
+  .capture h3{font-size:23px;margin-bottom:8px;color:var(--oat)}
+  .capture p{font-size:15.5px;color:rgba(231,230,223,.85);margin-bottom:18px}
+  .cform{display:flex;flex-direction:column;gap:10px}
+  .cform input{padding:15px 18px;border-radius:2px;border:2px solid transparent;font-size:16.5px;font-family:inherit;background:var(--oat-2);color:var(--ink)}
+  .cform input::placeholder{color:var(--muted)}
   .cform .btn{width:100%}
-  .cnote{position:relative;margin-top:12px;font-size:13px;color:rgba(255,255,255,.78)}
-  .cdone{position:relative;display:none;font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:#fff;margin-top:6px}
+  .cnote{margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(231,230,223,.72)}
+  .cdone{display:none;font-family:'Geist',sans-serif;font-weight:600;font-size:20px;color:var(--amber-2);margin-top:6px}
   .next-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
-  .restart{background:none;border:none;color:var(--ink-faint);font-size:14.5px;cursor:pointer;font-family:inherit;text-decoration:underline;align-self:center;margin-top:8px}
-  .restart:hover{color:var(--clay)}
+  .restart{background:none;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:13px;cursor:pointer;text-decoration:underline;align-self:center;margin-top:8px}
+  .restart:hover{color:var(--pine)}
   @media(min-width:560px){.cform{flex-direction:row}.cform input{flex:1}.cform .btn{width:auto;white-space:nowrap}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top">
-    <svg class="node" viewBox="0 0 32 32" fill="none">
-      <circle cx="6" cy="16" r="3.4" fill="#B8431F"/><circle cx="16" cy="6" r="3.4" fill="#1B1A18"/>
-      <circle cx="26" cy="16" r="3.4" fill="#1B1A18"/><circle cx="16" cy="26" r="3.4" fill="#1B1A18"/>
-      <path d="M8.6 14 13.6 8M18.4 8 23.4 14M23.4 18 18.4 24M13.6 24 8.6 18" stroke="#1B1A18" stroke-width="1.5"/>
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+      <circle cx="6" cy="16" r="3.2" fill="#BE8639"/><circle cx="16" cy="6" r="3.2" fill="#1D4A44"/>
+      <circle cx="26" cy="16" r="3.2" fill="#1D4A44"/><circle cx="16" cy="26" r="3.2" fill="#1D4A44"/>
+      <path d="M8.6 14 13.6 8M18.4 8 23.4 14M23.4 18 18.4 24M13.6 24 8.6 18" stroke="#191B18" stroke-width="1.5"/>
     </svg>
-    <div class="name">Kei <span>· Find Your Missing System</span></div>
+    <div class="name">Kei <span>· find your missing system</span></div>
   </div>
 
-  <!-- INTRO -->
   <section class="screen intro" id="intro">
-    <span class="eyebrow"><span class="dot"></span>Free diagnostic</span>
+    <div class="eyebrow">Free diagnostic</div>
     <h1>Find the <em>system</em> you're missing.</h1>
     <p>Ten honest questions about what you've built. At the end, I'll name the one system most likely holding you back, and the first move to fix it.</p>
-    <p class="meta">About two minutes. No signup to begin.</p>
-    <button class="btn btn-primary" onclick="start()">Start the diagnostic <span class="arr">→</span></button>
+    <p class="meta">About two minutes · no signup to begin</p>
+    <button class="btn btn-primary" onclick="start()">Start the diagnostic <span class="arr">&rarr;</span></button>
   </section>
 
-  <!-- QUESTION -->
   <section class="screen q hidden" id="qscreen">
     <div class="prog-wrap">
-      <div class="prog-row"><span id="qcount">Question 1 of 10</span><span id="qpct">10%</span></div>
+      <div class="prog-row"><span id="qcount">Question 1 of 10</span><span id="qpct">0%</span></div>
       <div class="prog"><div class="prog-fill" id="progfill"></div></div>
     </div>
     <h2 id="qtext"></h2>
@@ -145,10 +121,9 @@
       <button class="opt" onclick="answer(1)"><span class="dot"></span>Sort of<span class="sub">partly</span></button>
       <button class="opt" onclick="answer(0)"><span class="dot"></span>No<span class="sub">not really</span></button>
     </div>
-    <button class="back" id="backbtn" onclick="back()">← Back</button>
+    <button class="back" id="backbtn" onclick="back()">&larr; back</button>
   </section>
 
-  <!-- RESULT -->
   <section class="screen res hidden" id="result">
     <div class="res-label">Your missing system</div>
     <h1 id="rname"></h1>
@@ -166,21 +141,20 @@
       <p>I'll send the deeper read on your missing system, plus how the other four connect to it. No spam.</p>
       <div class="cform" id="cform">
         <input type="email" id="cemail" placeholder="you@yourbusiness.com" aria-label="Email" />
-        <button class="btn btn-ink" id="csubmit">Send it <span class="arr">→</span></button>
+        <button class="btn btn-amber" id="csubmit">Send it <span class="arr">&rarr;</span></button>
       </div>
-      <div class="cnote">Free. One email, unsubscribe anytime.</div>
-      <div class="cdone" id="cdone">Done. Check your inbox. ✦</div>
+      <div class="cnote">Free · one email · unsubscribe anytime</div>
+      <div class="cdone" id="cdone">Done. Check your inbox.</div>
     </div>
     <div class="next-steps">
-      <a href="#" class="btn btn-ghost" data-link="ebook">Read the $19 ebook on all five systems</a>
+      <a href="#" class="btn btn-ghost" data-link="ebook">Read the $19 guide on all five systems</a>
       <a href="#" class="btn btn-ghost" data-link="audit">Have me map your systems with you</a>
     </div>
-    <button class="restart" onclick="restart()">Start over</button>
+    <button class="restart" onclick="restart()">start over</button>
   </section>
 </div>
 
 <script>
-  // Two questions per system. Lowest total = the missing system.
   const QUESTIONS = [
     {sys:"Capture",  t:"When someone shows up and isn't ready to commit, can you reach them again later?"},
     {sys:"Capture",  t:"Do you have a way to turn interested visitors into contacts you actually own?"},
@@ -217,7 +191,7 @@
     }
   };
 
-  const ORDER = ["Measure","Capture","Activate","Trust","Retain"]; // tie-break priority
+  const ORDER = ["Measure","Capture","Activate","Trust","Retain"];
   let idx=0, scores={Capture:0,Activate:0,Trust:0,Retain:0,Measure:0}, history=[];
 
   const $=id=>document.getElementById(id);
@@ -248,13 +222,11 @@
   }
   function finish(){
     $("progfill").style.width="100%";
-    // lowest score wins; tie-break by ORDER
     let missing=ORDER[0], low=Infinity;
     ORDER.forEach(s=>{ if(scores[s]<low){low=scores[s];missing=s;} });
     $("rname").textContent=missing;
     $("rdiag").textContent=RESULTS[missing].diag;
     $("rmove").textContent=RESULTS[missing].move;
-    // bars (max 4 per system)
     const bl=$("barlist");bl.innerHTML="";
     ["Capture","Activate","Trust","Retain","Measure"].forEach(s=>{
       const w=Math.round(scores[s]/4*100);
@@ -269,17 +241,15 @@
   }
   function restart(){show("intro");window.scrollTo({top:0,behavior:"smooth"});}
 
-  // Email capture — connect to Kit / MailerLite here (replace handler or POST the email).
   $("csubmit").addEventListener("click",()=>{
     const v=$("cemail").value.trim();
-    if(!v||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){$("cemail").style.outline="2px solid #1B1A18";$("cemail").focus();return;}
+    if(!v||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){$("cemail").style.outline="2px solid #BE8639";$("cemail").focus();return;}
     $("cform").style.display="none";$("cdone").style.display="block";
   });
   $("cemail").addEventListener("input",()=>$("cemail").style.outline="none");
 
-  // Placeholder result CTAs — point ebook to Gumroad, audit to your application link.
   document.querySelectorAll("[data-link]").forEach(a=>a.addEventListener("click",e=>{
-    if(a.getAttribute("href")==="#"){e.preventDefault();alert("Placeholder — link this to your ebook / application page.");}
+    if(a.getAttribute("href")==="#"){e.preventDefault();alert("Placeholder - link this to your guide / application page.");}
   }));
 </script>
 </body>

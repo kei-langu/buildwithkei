@@ -241,20 +241,27 @@
   }
   function restart(){show("intro");window.scrollTo({top:0,behavior:"smooth"});}
 
-  // Kit (ConvertKit) capture — posts to your form, keeps the user on this page.
-  var KIT_ACTION="https://app.kit.com/forms/9705488/subscriptions";
-  function currentResult(){ var el=$("rname"); return el?el.textContent.trim():""; }
+  // Kit capture via API — reliably registers the subscriber, honest success/fail.
+  const KIT_API="https://api.convertkit.com/v3/forms/9705488/subscribe";
+  const KIT_KEY="Nr6sN0zRTPPwya6t6kms-w";
   $("csubmit").addEventListener("click",()=>{
     const v=$("cemail").value.trim();
     if(!v||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){$("cemail").style.outline="2px solid #BE8639";$("cemail").focus();return;}
-    const data=new FormData();
-    data.append("email_address", v);
-    // When you add a "missing_system" custom field in Kit, uncomment the next line:
-    // data.append("fields[missing_system]", currentResult());
-    fetch(KIT_ACTION,{method:"POST",body:data,headers:{"Accept":"application/json"}})
-      .then(r=>r.json().catch(()=>({})))
-      .then(()=>{ $("cform").style.display="none";$("cdone").style.display="block"; })
-      .catch(()=>{ $("cform").style.display="none";$("cdone").style.display="block"; });
+    const btn=$("csubmit"); btn.disabled=true;
+    fetch(KIT_API,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({api_key:KIT_KEY, email:v})})
+      .then(r=>r.json().then(d=>({ok:r.ok,d})))
+      .then(res=>{
+        btn.disabled=false;
+        if(res.ok && res.d && res.d.subscription){
+          $("cform").style.display="none";$("cdone").style.display="block";
+        } else {
+          $("cemail").style.outline="2px solid #BE8639";
+          alert("That didn't go through. Please try again in a moment.");
+        }
+      })
+      .catch(()=>{ btn.disabled=false; $("cemail").style.outline="2px solid #BE8639";
+        alert("Network hiccup, please try again."); });
   });
   $("cemail").addEventListener("input",()=>$("cemail").style.outline="none");
 
